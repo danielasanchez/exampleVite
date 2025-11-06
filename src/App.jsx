@@ -23,6 +23,17 @@ function App() {
       [event.target.name]:event.target.value
     })
   }
+
+  const handleSubmit =(event)=>{
+    event.preventDefault();
+    setLista([...lista,alumno]);
+  }
+
+  const eliminar=(id)=>{
+    const temporal = lista.filter((al,i)=>al.matricula!==id);
+    setLista(temporal);
+  }
+
   return (
     <div className="App">
       
@@ -37,7 +48,7 @@ function App() {
 
           <div className="Form">
 
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Matrícula</Form.Label>
                 <Form.Control 
@@ -86,18 +97,44 @@ function App() {
                     <option value="Ciberseguridad">Ciberseguridad</option>
                   </Form.Select>
               </Form.Group>
-
+            <Button variant="primary" type="submit">
+              Enviar
+            </Button>
 
             </Form>
           </div>
 
 
           <div className="List">
-             
-            <h1>{alumno.matricula}</h1>
-            <h1>{alumno.nombre}</h1>
-            <h1>{alumno.correo}</h1>
-            <h1>{alumno.carrera}</h1>
+            
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th># Matricula</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Carrera</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {
+                    lista.map((a,i)=>
+                      <tr key={i}>
+                        <td>{a.matricula}</td>
+                        <td>{a.nombre}</td>
+                        <td>{a.correo}</td>
+                        <td>{a.carrera}</td>
+                        <td><Button variant="primary"> Modificar</Button></td>
+                        <td><Button variant="danger" onClick={()=>eliminar(a.matricula)}> Eliminar</Button></td>
+                      </tr>
+                    )
+                  }
+
+                </tbody>
+              </Table>
 
           </div>
 
@@ -131,35 +168,7 @@ Swal.fire({
 
 
 
-<Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td colSpan={2}>Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</Table>
+
 
 
 
