@@ -17,6 +17,8 @@ function App() {
 
   const [lista, setLista]= useState([])
   
+  const [desh, setDesh] = useState(false);
+
   const saveChange=(event)=>{
     setAlumno({
       ...alumno,
@@ -26,7 +28,22 @@ function App() {
 
   const handleSubmit =(event)=>{
     event.preventDefault();
-    setLista([...lista,alumno]);
+    
+    setAlumno({
+      matricula:"",
+      nombre:"",
+      correo:"",
+      carrera:""
+    })
+    let temporal = lista;
+    //true=="true"
+    if (desh===true){
+      temporal = lista.filter((al)=>al.matricula!==alumno.matricula);
+    }
+
+    setLista([...temporal,alumno]);
+
+    setDesh(false);
   }
 
   const eliminar=(id)=>{
@@ -34,6 +51,16 @@ function App() {
     setLista(temporal);
   }
 
+  const modificar=(alum)=>{
+    setAlumno({
+      matricula:alum.matricula,
+      nombre:alum.nombre,
+      correo:alum.correo,
+      carrera:alum.carrera
+    })
+    setDesh(true);
+
+  }
   return (
     <div className="App">
       
@@ -56,6 +83,7 @@ function App() {
                    onChange={saveChange}
                    value={alumno.matricula}
                    name="matricula"
+                   disabled={desh}
                 
                 />
               </Form.Group>
@@ -127,7 +155,7 @@ function App() {
                         <td>{a.nombre}</td>
                         <td>{a.correo}</td>
                         <td>{a.carrera}</td>
-                        <td><Button variant="primary"> Modificar</Button></td>
+                        <td><Button variant="primary" onClick={()=>modificar(a)}> Modificar</Button></td>
                         <td><Button variant="danger" onClick={()=>eliminar(a.matricula)}> Eliminar</Button></td>
                       </tr>
                     )
