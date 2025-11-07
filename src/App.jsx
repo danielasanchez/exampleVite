@@ -35,7 +35,10 @@ function App() {
       correo:"",
       carrera:""
     })
+
+    //let temporal = [...lista];
     let temporal = lista;
+
     //true=="true"
     if (desh===true){
       temporal = lista.filter((al)=>al.matricula!==alumno.matricula);
