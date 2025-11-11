@@ -5,6 +5,9 @@ import { useState } from 'react';
 import {Button, Table, Form} from 'react-bootstrap';
 //https://sweetalert2.github.io/ 
 import Swal from 'sweetalert2';
+import Header from './Componentes/Header';
+import Formulario from './Componentes/Formulario';
+import Listado from './Componentes/Listado';
 
 function App() {
 
@@ -29,6 +32,33 @@ function App() {
   const handleSubmit =(event)=>{
     event.preventDefault();
     
+    const {matricula,nombre,correo,carrera}= alumno;
+
+    if (matricula.length===0 || nombre.length===0 ||correo.length===0 || carrera.length===0 || carrera==="selecciona"){
+
+      Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Llena todos los campos',
+            showConfirmButton: false,
+            timer: 1500
+      })
+
+      return;
+
+    }
+    else{
+
+      Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Alumno agregado',
+          showConfirmButton: false,
+          timer: 1500
+      })
+
+    }
+
     setAlumno({
       matricula:"",
       nombre:"",
@@ -36,8 +66,8 @@ function App() {
       carrera:""
     })
 
-    //let temporal = [...lista];
-    let temporal = lista;
+    let temporal = [...lista];
+    //let temporal = lista;
 
     //true=="true"
     if (desh===true){
@@ -67,107 +97,25 @@ function App() {
   return (
     <div className="App">
       
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Example #13
-          </p>
-        </header>
+      <Header
+        logo={logo}
+      />
 
         <div className="Containers">
 
-          <div className="Form">
+          <Formulario
+            handleSubmit={handleSubmit}
+            saveChange={saveChange}
+            alumno={alumno}
+            desh={desh}
+          />
 
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Matrícula</Form.Label>
-                <Form.Control 
-                   placeholder="Ingresa tu matrícula"
-                   onChange={saveChange}
-                   value={alumno.matricula}
-                   name="matricula"
-                   disabled={desh}
-                
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control 
-                   placeholder="Ingresa tu nombre completo"
-                   onChange={saveChange}
-                   value={alumno.nombre}
-                   name="nombre"
-                />
-                
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Correo</Form.Label>
-                <Form.Control type="email" 
-                   placeholder="Ingresa tu correo"
-                   onChange={saveChange}
-                   value={alumno.correo}
-                   name="correo"
-                   />
-                <Form.Text className="text-muted">
-                  Nunca compartiremos su correo electrónico con nadie más.
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Carrera</Form.Label>
-                  <Form.Select
-                   onChange={saveChange}
-                   value={alumno.carrera}
-                   name="carrera"
-                  >
-                    <option value="selecciona">selecciona</option>
-                    <option value="Informatica">Informática</option>
-                    <option value="Sistemas">Sistemas Computacionales</option>
-                    <option value="TICS">TICS</option>
-                    <option value="IA">IA </option>
-                    <option value="Ciberseguridad">Ciberseguridad</option>
-                  </Form.Select>
-              </Form.Group>
-            <Button variant="primary" type="submit">
-              Enviar
-            </Button>
-
-            </Form>
-          </div>
-
-
-          <div className="List">
-            
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th># Matricula</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Carrera</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  {
-                    lista.map((a,i)=>
-                      <tr key={i}>
-                        <td>{a.matricula}</td>
-                        <td>{a.nombre}</td>
-                        <td>{a.correo}</td>
-                        <td>{a.carrera}</td>
-                        <td><Button variant="primary" onClick={()=>modificar(a)}> Modificar</Button></td>
-                        <td><Button variant="danger" onClick={()=>eliminar(a.matricula)}> Eliminar</Button></td>
-                      </tr>
-                    )
-                  }
-
-                </tbody>
-              </Table>
-
-          </div>
+          <Listado
+            lista={lista}
+            eliminar={eliminar}
+            modificar={modificar}
+          />
+          
 
         </div>
     </div>
